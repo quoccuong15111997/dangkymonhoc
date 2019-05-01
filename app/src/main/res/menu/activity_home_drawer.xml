@@ -13,9 +13,17 @@
             android:icon="@drawable/icfee"
             android:title="Xem học phí"/>
         <item
+            android:id="@+id/nav_ThongBao"
+            android:icon="@drawable/ic_noti"
+            android:title="Thông báo" />
+        <item
             android:id="@+id/nav_TaiKhoan"
             android:icon="@drawable/ic_account"
             android:title="Tài khoản" />
+        <item
+            android:id="@+id/nav_DangXuat"
+            android:icon="@drawable/ic_logout"
+            android:title="Đăng xuất" />
     </group>
 
 </menu>

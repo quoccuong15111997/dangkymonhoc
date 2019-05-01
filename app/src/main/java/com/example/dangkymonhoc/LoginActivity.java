@@ -1,6 +1,8 @@
 package com.example.dangkymonhoc;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcelable;
@@ -8,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -28,6 +31,14 @@ public class LoginActivity extends AppCompatActivity {
     EditText edtMa, edtPass;
     SinhVien sinhVien;
 
+    CheckBox chkRemember;
+    SharedPreferences sharedPreferences;
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String USERNAME = "userNameKey";
+    public static final String PASS = "passKey";
+    public static final String REMEMBER = "remember";
+    public static String KEY_NHAN_VIEN="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         processCopy();
         addControls();
         addEvents();
+        loadData();
     }
 
     private void addEvents() {
@@ -42,6 +54,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(edtMa.getText()!=null && edtMa.getText()!=null){
+                    if (chkRemember.isChecked())
+                        //lưu lại thông tin đăng nhập
+                        saveData(edtMa.getText().toString(),edtPass.getText().toString());
+                    else
+                        clearData();
+
                     initDatabase(edtMa.getText().toString(),edtPass.getText().toString());
                 }
                 else
@@ -51,11 +69,35 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void addControls() {
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         btnLogin=findViewById(R.id.btnLogin);
         edtMa=findViewById(R.id.edtUserName);
         edtPass=findViewById(R.id.edtPassword);
+        chkRemember= findViewById(R.id.chkRemember);
+    }
+    private void clearData() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
     }
 
+    private void saveData(String username, String Pass) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(USERNAME, username);
+        editor.putString(PASS, Pass);
+        editor.putBoolean(REMEMBER,chkRemember.isChecked());
+        editor.commit();
+    }
+    private void loadData() {
+        if(sharedPreferences.getBoolean(REMEMBER,false)) {
+            edtMa.setText(sharedPreferences.getString(USERNAME, ""));
+            edtPass.setText(sharedPreferences.getString(PASS, ""));
+            chkRemember.setChecked(true);
+        }
+        else
+            chkRemember.setChecked(false);
+
+    }
     private void initDatabase(String maSv, String password) {
         sinhVien = new SinhVien();
         database=openOrCreateDatabase("DHMH.db",MODE_PRIVATE,null);
