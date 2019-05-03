@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.adapter.MonHocAdapter;
@@ -47,7 +48,8 @@ public class MonHocFragment extends Fragment implements CheckBoxIsCheck {
     ArrayList<MonHoc> dsMonHocChon;
     FloatingActionButton fabAdd, fabDelete;
     int REQUEST_CODE_ADD_MONHOC = 1;
-
+    TextView txtSoTinChi;
+    int tongSoTinChi=0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -95,6 +97,7 @@ public class MonHocFragment extends Fragment implements CheckBoxIsCheck {
         dsMonHoc = new ArrayList<>();
         monHocAdapter = new MonHocAdapter(view.getContext(), R.layout.item_monhoc, dsMonHoc);
         monHocAdapter.isChecked(this);
+        txtSoTinChi=view.findViewById(R.id.txtSoTinChi);
         layDuLieuDatabase();
         lvMonHoc.setAdapter(monHocAdapter);
         dsMonHocChon = new ArrayList<>();
@@ -224,6 +227,7 @@ class xoaMonHocTask extends AsyncTask<ArrayList<MonHoc>, Void, Boolean> {
             public void onClick(DialogInterface dialog, int which) {
             }
         }).show();
+        tongSoTinChi=0;
         monHocAdapter.clear();
         layDuLieuDatabase();
     }
@@ -252,6 +256,8 @@ class layChiTietMonHocTask extends AsyncTask<String, Void, ArrayList<MonHoc>> {
     @Override
     protected void onPostExecute(ArrayList<MonHoc> monHocs) {
         super.onPostExecute(monHocs);
+        tongSoTinChi+=monHocs.get(0).getSoTC();
+        txtSoTinChi.setText(tongSoTinChi+" Tín chỉ");
         dsMonHoc.addAll(monHocs);
         monHocAdapter.notifyDataSetChanged();
     }
@@ -298,6 +304,7 @@ class layChiTietMonHocTask extends AsyncTask<String, Void, ArrayList<MonHoc>> {
         if (requestCode == REQUEST_CODE_ADD_MONHOC) {
             if (resultCode == Activity.RESULT_OK) {
                 monHocAdapter.clear();
+                tongSoTinChi=0;
                 layDuLieuDatabase();
             }
         }
