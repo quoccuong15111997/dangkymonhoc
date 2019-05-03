@@ -25,7 +25,6 @@ public class HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         addControls();
 
@@ -37,6 +36,9 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MonHocFragment()).commit();
+        toolbar.setTitle("Quản lý môn học");
     }
 
     private void addControls() {
@@ -84,8 +86,11 @@ public class HomeActivity extends AppCompatActivity
 
         if (id == R.id.nav_MonHoc) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MonHocFragment()).commit();
+            MonHocFragment.tongSoTinChi=0;
             toolbar.setTitle("Quản lý môn học");
         } else if (id == R.id.nav_HocPhi) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HocPhiFragment()).commit();
+            toolbar.setTitle("Quản lý học phí");
 
         } else if (id == R.id.nav_TaiKhoan) {
 

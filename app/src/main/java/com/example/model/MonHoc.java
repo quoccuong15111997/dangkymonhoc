@@ -6,9 +6,9 @@ public class MonHoc implements Serializable {
     private String maMH;
     private String TenMH;
     private int soTC;
-    private int chon;
+    private boolean chon;
 
-    public MonHoc(String maMH, String tenMH, int soTC, int chon) {
+    public MonHoc(String maMH, String tenMH, int soTC, boolean chon) {
         this.maMH = maMH;
         TenMH = tenMH;
         this.soTC = soTC;
@@ -42,11 +42,11 @@ public class MonHoc implements Serializable {
         this.soTC = soTC;
     }
 
-    public int getChon() {
+    public boolean isChon() {
         return chon;
     }
 
-    public void setChon(int chon) {
+    public void setChon(boolean chon) {
         this.chon = chon;
     }
 

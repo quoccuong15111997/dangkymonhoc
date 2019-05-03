@@ -2,10 +2,12 @@ package com.example.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -14,67 +16,99 @@ import com.example.dangkymonhoc.R;
 import com.example.impl.CheckBoxIsCheck;
 import com.example.model.MonHoc;
 
-import java.util.List;
+import java.util.ArrayList;
 
-public class MonHocAdapter extends ArrayAdapter<MonHoc> {
-    Activity context=null;
-    List<MonHoc> objects;
-    int resource;
+public class MonHocAdapter extends RecyclerView.Adapter<MonHocAdapter.ViewHolder>{
+    private Context context;
+    private ArrayList<MonHoc> data;
+    private SparseBooleanArray itemStateArray= new SparseBooleanArray();
+
     CheckBoxIsCheck checkBoxIsCheck;
     public void isChecked(CheckBoxIsCheck checkBoxIsCheck){
         this.checkBoxIsCheck=checkBoxIsCheck;
     }
 
-    public MonHocAdapter(Context context, int resource, List<MonHoc> objects) {
-        super(context, resource, objects);
-        this.resource=resource;
-        this.objects=objects;
-        this.context= (Activity) context;
+    public MonHocAdapter(Context context, ArrayList<MonHoc> data){
+        this.context=context;
+        this.data=data;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, final int i) {
+        View view=null;
+        if(i==1)
+        {
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_monhoc_cu,viewGroup,false);
+        }
+        else
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_monhoc_moi,viewGroup,false);
+        ViewHolder holder = new ViewHolder(view);
+        return holder;
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        final ViewHolder viewHolder;
-        LayoutInflater layoutInflater = this.context.getLayoutInflater();
-        if(convertView==null){
-            convertView=layoutInflater.inflate(this.resource,null);
-            viewHolder=new ViewHolder();
-            viewHolder.txtTenMH=convertView.findViewById(R.id.txtTenMonHoc);
-            viewHolder.txtSoTC=convertView.findViewById(R.id.txtSoTC);
-            viewHolder.txtMaMH=convertView.findViewById(R.id.txtMaMH);
-            viewHolder.chkMonHoc=convertView.findViewById(R.id.chkMonHoc);
-            viewHolder.position=position;
-
-            convertView.setTag(viewHolder);
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
+        final MonHoc monHoc= data.get(i);
+        if (!itemStateArray.get(i, false)) {
+            viewHolder.chkMonHoc.setChecked(false);}
+        else {
+            viewHolder.chkMonHoc.setChecked(true);
         }
-        else
-        {
-            viewHolder= (ViewHolder) convertView.getTag();
-        }
-        MonHoc monHoc=objects.get(position);
         viewHolder.txtTenMH.setText(monHoc.getTenMH());
-        viewHolder.txtSoTC.setText(monHoc.getSoTC()+"");
         viewHolder.txtMaMH.setText(monHoc.getMaMH());
-
-        viewHolder.chkMonHoc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked==true){
-                    checkBoxIsCheck.isChecked(position,true);
-                }
-                else if(isChecked==false){
-                    checkBoxIsCheck.isChecked(position,false);
-                }
-            }
-        });
-        return convertView;
+        viewHolder.txtSoTC.setText(monHoc.getSoTC()+"");
     }
 
-    public static class ViewHolder{
+    @Override
+    public int getItemCount() {
+        return data.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return 2;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView txtTenMH;
-        TextView txtSoTC;
         TextView txtMaMH;
+        TextView txtSoTC;
         CheckBox chkMonHoc;
-        int position;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            this.setIsRecyclable(false);
+            itemView.setOnClickListener(this);
+            txtMaMH=itemView.findViewById(R.id.txtMaMH);
+            txtTenMH=itemView.findViewById(R.id.txtTenMonHoc);
+            txtSoTC=(TextView) itemView.findViewById(R.id.txtSoTC);
+            chkMonHoc=itemView.findViewById(R.id.chkMonHoc);
+            chkMonHoc.setOnClickListener(this);
+            chkMonHoc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked==true){
+                        checkBoxIsCheck.isChecked(getAdapterPosition(),true);
+                    }
+                    else if(isChecked==false){
+                        checkBoxIsCheck.isChecked(getAdapterPosition(),false);
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            if (!itemStateArray.get(adapterPosition, false)) {
+                chkMonHoc.setChecked(true);
+                itemStateArray.put(adapterPosition, true);
+            }
+            else  {
+                chkMonHoc.setChecked(false);
+                itemStateArray.put(adapterPosition, false);
+            }
+        }
     }
 }

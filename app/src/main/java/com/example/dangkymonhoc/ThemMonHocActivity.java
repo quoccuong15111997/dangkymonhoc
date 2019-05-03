@@ -154,9 +154,9 @@ public class ThemMonHocActivity extends AppCompatActivity implements CheckBoxIsC
         for (MonHoc monHocDaChon : MonHocFragment.dsMonHoc) {
             for (MonHoc monHocMoi : dsMonHoc) {
                 if (monHocDaChon.getMaMH().equals(monHocMoi.getMaMH())) {
-                    monHocMoi.setChon(1);
+                    monHocMoi.setChon(true);
                 } else
-                    monHocDaChon.setChon(2);
+                    monHocDaChon.setChon(false);
             }
         }
         recycleAdapter.notifyDataSetChanged();
@@ -195,16 +195,16 @@ public class ThemMonHocActivity extends AppCompatActivity implements CheckBoxIsC
                 String ma = cursor.getString(0);
                 String ten = cursor.getString(1);
                 int soTC = cursor.getInt(2);
-                MonHoc monHoc = new MonHoc(ma, ten, soTC, 0);
+                MonHoc monHoc = new MonHoc(ma, ten, soTC, true);
                 monHocs.add(monHoc);
             }
             cursor.close();
             for (MonHoc monHocDaChon : MonHocFragment.dsMonHoc) {
                 for (MonHoc monHocMoi : monHocs) {
                     if (monHocDaChon.getMaMH().equals(monHocMoi.getMaMH())) {
-                        monHocMoi.setChon(1);
+                        monHocMoi.setChon(true);
                     } else
-                        monHocDaChon.setChon(2);
+                        monHocDaChon.setChon(false);
                 }
             }
             return monHocs;
@@ -254,16 +254,16 @@ public class ThemMonHocActivity extends AppCompatActivity implements CheckBoxIsC
                 String ma = cursor.getString(0);
                 String ten = cursor.getString(1);
                 int soTC = cursor.getInt(2);
-                MonHoc monHoc = new MonHoc(ma, ten, soTC, 0);
+                MonHoc monHoc = new MonHoc(ma, ten, soTC, true);
                 monHocs.add(monHoc);
             }
             cursor.close();
             for (MonHoc monHocDaChon : MonHocFragment.dsMonHoc) {
                 for (MonHoc monHocMoi : monHocs) {
                     if (monHocDaChon.getMaMH().equals(monHocMoi.getMaMH())) {
-                        monHocMoi.setChon(1);
+                        monHocMoi.setChon(true);
                     } else
-                        monHocDaChon.setChon(2);
+                        monHocDaChon.setChon(false);
                 }
             }
             return monHocs;
