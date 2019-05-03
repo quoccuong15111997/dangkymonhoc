@@ -19,17 +19,14 @@ import java.util.ArrayList;
 public class MonHocRecycleAdapter extends RecyclerView.Adapter<MonHocRecycleAdapter.ViewHolder> {
     private Context context;
     private ArrayList<MonHoc> data;
-    private ArrayList<MonHoc> dsMaDaChonTruoc;
 
-    public static final  int TYPE_NEW=1;
-    public static final  int TYPE_OLD=2;
+
     CheckBoxIsCheck checkBoxIsCheck;
     public void isChecked(CheckBoxIsCheck checkBoxIsCheck){
         this.checkBoxIsCheck=checkBoxIsCheck;
     }
 
-    public MonHocRecycleAdapter(Context context, ArrayList<MonHoc> data, ArrayList<MonHoc> dsMaDaChonTruoc){
-        this.dsMaDaChonTruoc=dsMaDaChonTruoc;
+    public MonHocRecycleAdapter(Context context, ArrayList<MonHoc> data){
         this.context=context;
         this.data=data;
     }
@@ -38,7 +35,7 @@ public class MonHocRecycleAdapter extends RecyclerView.Adapter<MonHocRecycleAdap
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, final int i) {
         View view=null;
-        if(i==TYPE_OLD)
+        if(i==1)
         {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_monhoc_cu,viewGroup,false);
         }
@@ -63,17 +60,14 @@ public class MonHocRecycleAdapter extends RecyclerView.Adapter<MonHocRecycleAdap
 
     @Override
     public int getItemViewType(int position) {
-        MonHoc monHoc= data.get(position);
-        if (monHoc!=null) {
-            for(MonHoc m : dsMaDaChonTruoc){
-               if(m.getMaMH().equals(monHoc.getMaMH())==true){
-                   return TYPE_OLD;
-               }
-               else
-                   return TYPE_NEW;
-            }
+        MonHoc monHoc=data.get(position);
+        if (monHoc != null) {
+            if(monHoc.getChon()==1)
+                return 1;
+            else
+                return 2;
         }
-            return -1;
+        return -1;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,25 +17,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.adapter.MonHocAdapter;
 import com.example.impl.CheckBoxIsCheck;
 import com.example.model.BienLai;
 import com.example.model.MonHoc;
-import com.example.model.SinhVien;
 import com.example.model.ThongTinHocPhi;
 
 import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
-import static android.content.Context.TELECOM_SERVICE;
 
-public class MonHocFragment extends Fragment implements CheckBoxIsCheck {
+public class HocPhiFragment extends Fragment implements CheckBoxIsCheck {
     View view;
     SQLiteDatabase database = null;
     public static BienLai bienLaiHocPhi;

@@ -6,11 +6,13 @@ public class MonHoc implements Serializable {
     private String maMH;
     private String TenMH;
     private int soTC;
+    private int chon;
 
-    public MonHoc(String maMH, String tenMH, int soTC) {
+    public MonHoc(String maMH, String tenMH, int soTC, int chon) {
         this.maMH = maMH;
         TenMH = tenMH;
         this.soTC = soTC;
+        this.chon = chon;
     }
 
     public MonHoc() {
@@ -38,6 +40,14 @@ public class MonHoc implements Serializable {
 
     public void setSoTC(int soTC) {
         this.soTC = soTC;
+    }
+
+    public int getChon() {
+        return chon;
+    }
+
+    public void setChon(int chon) {
+        this.chon = chon;
     }
 
     @Override
