@@ -97,6 +97,9 @@ public class ThemMonHocActivity extends AppCompatActivity implements CheckBoxIsC
                 }
             }).setIcon(R.drawable.ic_ok).show();
         }
+        dsMonHoc.clear();
+        layDanhSachMonHoc();
+        recycleAdapter.notifyDataSetChanged();
     }
 
     private void addControls() {
@@ -125,10 +128,13 @@ public class ThemMonHocActivity extends AppCompatActivity implements CheckBoxIsC
         MonHoc monHoc = dsMonHoc.get(position);
         if (check == true) {
             //Toast.makeText(view.getContext(), "Bạn chọn: " + monHoc.getTenMH(), Toast.LENGTH_LONG).show();
-            Snackbar.make(view, "Bạn chọn: " + monHoc.getTenMH(), Snackbar.LENGTH_LONG).show();
-            tongSoTinChi+=monHoc.getSoTC();
-            dsMonHocChon.add(monHoc);
-            txtSoTinChi.setText(tongSoTinChi+" Tín chỉ");
+            boolean kq=KiemTraTonTai(monHoc);
+            if(kq==true){
+                dsMonHocChon.add(monHoc);
+                tongSoTinChi+=monHoc.getSoTC();
+                txtSoTinChi.setText(tongSoTinChi+"");
+            }
+
         } else if (check == false) {
             //Toast.makeText(view.getContext(), "Bạn bỏ chọn: " + monHoc.getTenMH(), Toast.LENGTH_LONG).show();
             Snackbar.make(view, "Bạn bỏ chọn: " + monHoc.getTenMH(), Snackbar.LENGTH_LONG).show();
@@ -136,6 +142,15 @@ public class ThemMonHocActivity extends AppCompatActivity implements CheckBoxIsC
             tongSoTinChi-=monHoc.getSoTC();
             txtSoTinChi.setText(tongSoTinChi+" Tín chỉ");
         }
+    }
+
+    private boolean KiemTraTonTai(MonHoc monHoc) {
+        for(MonHoc mh : dsMonHocChon){
+            if(mh.getMaMH().equals(monHoc.getMaMH())){
+                return false;
+            }
+        }
+        return true;
     }
 
     public void layDanhSachMonHoc() {

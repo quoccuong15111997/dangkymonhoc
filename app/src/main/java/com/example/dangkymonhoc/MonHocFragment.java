@@ -51,6 +51,7 @@ public class MonHocFragment extends Fragment implements CheckBoxIsCheck{
         addControls();
         addEvents();
         return view;
+
     }
 
     private void addEvents() {
@@ -59,6 +60,8 @@ public class MonHocFragment extends Fragment implements CheckBoxIsCheck{
             public void onClick(View v) {
                 Intent intent = new Intent(view.getContext(), ThemMonHocActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_ADD_MONHOC);
+
+
             }
         });
         fabDelete.setOnClickListener(new View.OnClickListener() {
@@ -279,11 +282,23 @@ class layChiTietMonHocTask extends AsyncTask<String, Void, ArrayList<MonHoc>> {
         MonHoc monHoc = dsMonHoc.get(position);
         if (check == true) {
             //Toast.makeText(view.getContext(), "Bạn chọn: " + monHoc.getTenMH(), Toast.LENGTH_LONG).show();
-            dsMonHocChon.add(monHoc);
+            boolean kq=KiemTraTonTai(monHoc);
+            if(kq==true){
+                dsMonHocChon.add(monHoc);
+            }
+
         } else if (check == false) {
             //Toast.makeText(view.getContext(), "Bạn bỏ chọn: " + monHoc.getTenMH(), Toast.LENGTH_LONG).show();
             dsMonHocChon.remove(monHoc);
         }
+    }
+    private boolean KiemTraTonTai(MonHoc monHoc) {
+        for(MonHoc mh : dsMonHocChon){
+            if(mh.getMaMH().equals(monHoc.getMaMH())){
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

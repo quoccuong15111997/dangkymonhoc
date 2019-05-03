@@ -40,6 +40,10 @@ public class HomeActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MonHocFragment()).commit();
         toolbar.setTitle("Quản lý môn học");
     }
+    public void loadFragment(){
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MonHocFragment()).commit();
+        toolbar.setTitle("Quản lý môn học");
+    }
 
     private void addControls() {
         Intent intent=getIntent();
