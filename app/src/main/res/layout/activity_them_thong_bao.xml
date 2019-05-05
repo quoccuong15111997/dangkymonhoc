@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ThemThongBaoActivity">
+    <RelativeLayout
+        android:id="@+id/rl_tool_bar_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorMBlue"
+        android:outlineProvider="bounds">
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:src="@drawable/ic_action_arrow_left" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Thêm thông báo"
+            android:textColor="@color/text_white"
+            android:textStyle="bold"
+            android:visibility="visible"
+            android:textSize="20sp"/>
+        <ImageView
+            android:id="@+id/iv_Save"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:src="@drawable/ic_save" />
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:text="Tiêu đề"
+        android:textColor="@color/colorBlack"
+        android:textSize="20dp"/>
+    <EditText
+        android:id="@+id/edtTitle"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập tiêu đề"
+        android:textColor="@color/colorRed"
+        android:background="@drawable/border_edittext"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:text="Nội dung"
+        android:textColor="@color/colorBlack"
+        android:textSize="20dp"/>
+    <EditText
+        android:id="@+id/edtMessege"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_edittext"
+        android:layout_margin="10dp"
+        android:hint="Nhập nội dung"/>
+</LinearLayout>

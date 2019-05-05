@@ -8,8 +8,13 @@ import android.os.Bundle;
 import com.example.dangkymonhoc.R;
 import com.example.model.BienLai;
 import com.example.model.SinhVien;
+import com.example.model.ThongBao;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class PushDataFirebaseActivity extends AppCompatActivity {
     DatabaseReference mData;
@@ -21,10 +26,17 @@ public class PushDataFirebaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_data_firebase);
         mData=FirebaseDatabase.getInstance().getReference();
-        pushData();
+        //pushDataSinhVien();
+        pushDataThongBao();
     }
 
-    private void pushData() {
+    private void pushDataThongBao() {
+        SimpleDateFormat simpleDateFormat= new SimpleDateFormat("dd/MM/yyyy");
+        ThongBao thongBao= new ThongBao("admin","Đóng học phí","Sinh viên đóng học phí đúng ngày",simpleDateFormat.format(Calendar.getInstance().getTime()));
+        mData.child("ThongBao").push().setValue(thongBao);
+    }
+
+    private void pushDataSinhVien() {
         database=openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
         Cursor cursor = database.rawQuery("select * from SINHVIEN", null);
         while (cursor.moveToNext()) {

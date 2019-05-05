@@ -1,11 +1,13 @@
 package com.example.dangkymonhoc;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcelable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -102,6 +104,15 @@ public class LoginActivity extends AppCompatActivity {
         sinhVien = new SinhVien();
         database=openOrCreateDatabase("DHMH.db",MODE_PRIVATE,null);
         Cursor cursor=database.rawQuery("select * from SinhVien where MASV like '"+ maSv+"'",null);
+        if(cursor.getCount()==0){
+            AlertDialog builder = new AlertDialog.Builder(LoginActivity.this).setTitle("Sai Mã sinh viên hoặc Mật khẩu").setIcon(R.drawable.ic_error)
+                    .setNegativeButton("Thử lại", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    }).show();
+        }
         while (cursor.moveToNext())
         {
             String ma=cursor.getString(0);
@@ -113,15 +124,22 @@ public class LoginActivity extends AppCompatActivity {
             sinhVien.setPassword(pass);
             sinhVien.setPhone(phone);
 
-            if(pass.equals(password)==true){
-                Toast.makeText(LoginActivity.this,"Đăng nhập thành công",Toast.LENGTH_LONG).show();
-                Intent intent= new Intent(LoginActivity.this,HomeActivity.class);
-                intent.putExtra("SV", sinhVien);
-                startActivity(intent);
+                if (pass.equals(password) == true) {
+                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    intent.putExtra("SV", sinhVien);
+                    startActivity(intent);
+                } else
+                {
+                    AlertDialog builder = new AlertDialog.Builder(LoginActivity.this).setTitle("Sai Mã sinh viên hoặc Mật khẩu").setIcon(R.drawable.ic_error)
+                            .setNegativeButton("Thử lại", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).show();
+                }
             }
-            else
-                Toast.makeText(LoginActivity.this,"Sai Mã sinh viên hoặc mật khẩu",Toast.LENGTH_LONG).show();
-        }
         cursor.close();
         database.close();
     }

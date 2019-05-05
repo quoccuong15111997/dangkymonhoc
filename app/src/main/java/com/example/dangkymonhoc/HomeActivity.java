@@ -101,7 +101,8 @@ public class HomeActivity extends AppCompatActivity
             toolbar.setTitle("Thông tin sinh viên");
         }
         else if (id == R.id.nav_ThongBao) {
-
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ThongBaoFragment()).commit();
+            toolbar.setTitle("Thông báo");
         }
         else if (id == R.id.nav_DangXuat) {
             finish();
