@@ -37,11 +37,7 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MonHocFragment()).commit();
-        toolbar.setTitle("Quản lý môn học");
-    }
-    public void loadFragment(){
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MonHocFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MonHocFragments()).commit();
         toolbar.setTitle("Quản lý môn học");
     }
 
@@ -89,15 +85,20 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_MonHoc) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MonHocFragment()).commit();
-            MonHocFragment.tongSoTinChi=0;
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MonHocFragments()).commit();
+            MonHocFragments.tongSoTinChi=0;
             toolbar.setTitle("Quản lý môn học");
         } else if (id == R.id.nav_HocPhi) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HocPhiFragment()).commit();
             toolbar.setTitle("Quản lý học phí");
+        }
+        else if (id == R.id.nav_HoaDon) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HoaDonFragment()).commit();
+            toolbar.setTitle("Quản lý hóa dơn");
 
-        } else if (id == R.id.nav_TaiKhoan) {
-
+        }else if (id == R.id.nav_TaiKhoan) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new TaiKhoanFragment()).commit();
+            toolbar.setTitle("Thông tin sinh viên");
         }
         else if (id == R.id.nav_ThongBao) {
 

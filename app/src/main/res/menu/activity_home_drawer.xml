@@ -13,6 +13,10 @@
             android:icon="@drawable/icfee"
             android:title="Xem học phí"/>
         <item
+            android:id="@+id/nav_HoaDon"
+            android:icon="@drawable/bill"
+            android:title="Hóa đơn học phí"/>
+        <item
             android:id="@+id/nav_ThongBao"
             android:icon="@drawable/ic_noti"
             android:title="Thông báo" />

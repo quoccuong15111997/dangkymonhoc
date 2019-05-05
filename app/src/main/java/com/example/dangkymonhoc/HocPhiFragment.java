@@ -36,12 +36,12 @@ public class HocPhiFragment extends Fragment {
 
     private void addControls() {
         dsMonHoc= new ArrayList<>();
-        dsMonHoc.addAll(MonHocFragment.dsMonHoc);
+        dsMonHoc.addAll(MonHocFragments.dsMonHoc);
         txtTongSoTien=view.findViewById(R.id.txtTongSoTien);
         lvMonHoc=view.findViewById(R.id.lvMonHoc);
         hocPhiAdapter= new HocPhiAdapter(view.getContext(),R.layout.item_hoc_phi,dsMonHoc);
         lvMonHoc.setAdapter(hocPhiAdapter);
-        int soTien=MonHocFragment.tongSoTinChi*400000;
+        int soTien=MonHocFragments.tongSoTinChi*400000;
         txtTongSoTien.setText(soTien+" VNĐ");
     }
 }

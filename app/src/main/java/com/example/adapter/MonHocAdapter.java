@@ -21,7 +21,6 @@ import java.util.ArrayList;
 public class MonHocAdapter extends RecyclerView.Adapter<MonHocAdapter.ViewHolder>{
     private Context context;
     private ArrayList<MonHoc> data;
-    private SparseBooleanArray itemStateArray= new SparseBooleanArray();
 
     CheckBoxIsCheck checkBoxIsCheck;
     public void isChecked(CheckBoxIsCheck checkBoxIsCheck){
@@ -50,14 +49,24 @@ public class MonHocAdapter extends RecyclerView.Adapter<MonHocAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         final MonHoc monHoc= data.get(i);
-        if (!itemStateArray.get(i, false)) {
-            viewHolder.chkMonHoc.setChecked(false);}
-        else {
-            viewHolder.chkMonHoc.setChecked(true);
-        }
         viewHolder.txtTenMH.setText(monHoc.getTenMH());
         viewHolder.txtMaMH.setText(monHoc.getMaMH());
         viewHolder.txtSoTC.setText(monHoc.getSoTC()+"");
+        if(monHoc.isTinhTrang()){
+            viewHolder.chkMonHoc.setChecked(true);
+        }
+        else
+            viewHolder.chkMonHoc.setChecked(false);
+        viewHolder.chkMonHoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(monHoc.isTinhTrang()){
+                    monHoc.setTinhTrang(false);
+                }
+                else
+                    monHoc.setTinhTrang(true);
+            }
+        });
     }
 
     @Override
@@ -70,7 +79,7 @@ public class MonHocAdapter extends RecyclerView.Adapter<MonHocAdapter.ViewHolder
         return 2;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder{
         TextView txtTenMH;
         TextView txtMaMH;
         TextView txtSoTC;
@@ -79,12 +88,10 @@ public class MonHocAdapter extends RecyclerView.Adapter<MonHocAdapter.ViewHolder
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.setIsRecyclable(false);
-            itemView.setOnClickListener(this);
             txtMaMH=itemView.findViewById(R.id.txtMaMH);
             txtTenMH=itemView.findViewById(R.id.txtTenMonHoc);
             txtSoTC=(TextView) itemView.findViewById(R.id.txtSoTC);
             chkMonHoc=itemView.findViewById(R.id.chkMonHoc);
-            chkMonHoc.setOnClickListener(this);
             chkMonHoc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -98,17 +105,5 @@ public class MonHocAdapter extends RecyclerView.Adapter<MonHocAdapter.ViewHolder
             });
         }
 
-        @Override
-        public void onClick(View v) {
-            int adapterPosition = getAdapterPosition();
-            if (!itemStateArray.get(adapterPosition, false)) {
-                chkMonHoc.setChecked(true);
-                itemStateArray.put(adapterPosition, true);
-            }
-            else  {
-                chkMonHoc.setChecked(false);
-                itemStateArray.put(adapterPosition, false);
-            }
-        }
     }
 }

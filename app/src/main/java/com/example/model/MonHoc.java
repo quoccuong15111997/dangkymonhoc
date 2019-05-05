@@ -7,12 +7,14 @@ public class MonHoc implements Serializable {
     private String TenMH;
     private int soTC;
     private boolean chon;
+    private boolean tinhTrang;
 
-    public MonHoc(String maMH, String tenMH, int soTC, boolean chon) {
+    public MonHoc(String maMH, String tenMH, int soTC, boolean chon, boolean tinhTrang) {
         this.maMH = maMH;
         TenMH = tenMH;
         this.soTC = soTC;
         this.chon = chon;
+        this.tinhTrang = tinhTrang;
     }
 
     public MonHoc() {
@@ -48,6 +50,14 @@ public class MonHoc implements Serializable {
 
     public void setChon(boolean chon) {
         this.chon = chon;
+    }
+
+    public boolean isTinhTrang() {
+        return tinhTrang;
+    }
+
+    public void setTinhTrang(boolean tinhTrang) {
+        this.tinhTrang = tinhTrang;
     }
 
     @Override

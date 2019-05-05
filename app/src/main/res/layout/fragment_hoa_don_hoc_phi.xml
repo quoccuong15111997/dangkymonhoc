@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:orientation="vertical"
+<LinearLayout android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,31 +17,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Thông tin học phí"
+            android:text="Hóa đơn học phí"
             android:textColor="@color/text_white"
             android:textStyle="bold"
             android:visibility="visible"
             android:textSize="20sp"/>
 
     </RelativeLayout>
-    <TextView
-        android:id="@+id/txtTongSoTien"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tổng số tiền "
-        android:background="@drawable/border_edittext"
-        android:layout_centerHorizontal="true"
-        android:textSize="20dp"
-        android:layout_margin="10dp"
-        android:textColor="@color/colorprint"
-        android:layout_below="@id/rl_tool_bar_top"/>
 
     <ListView
-        android:id="@+id/lvMonHoc"
-        android:background="@drawable/border_edittext"
-        android:layout_margin="5dp"
-        android:layout_below="@id/txtTongSoTien"
+        android:layout_margin="10dp"
+        android:id="@+id/lvHoaDon"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </ListView>
-</RelativeLayout>
+</LinearLayout>

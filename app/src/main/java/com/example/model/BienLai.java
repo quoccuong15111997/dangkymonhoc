@@ -6,11 +6,13 @@ public class BienLai implements Serializable {
     private int soBL;
     private String ngayHP;
     private String maSV;
+    private int soTien;
 
-    public BienLai(int soBL, String ngayHP, String maSV) {
+    public BienLai(int soBL, String ngayHP, String maSV, int soTien) {
         this.soBL = soBL;
         this.ngayHP = ngayHP;
         this.maSV = maSV;
+        this.soTien = soTien;
     }
 
     public BienLai() {
@@ -38,5 +40,13 @@ public class BienLai implements Serializable {
 
     public void setMaSV(String maSV) {
         this.maSV = maSV;
+    }
+
+    public int getSoTien() {
+        return soTien;
+    }
+
+    public void setSoTien(int soTien) {
+        this.soTien = soTien;
     }
 }

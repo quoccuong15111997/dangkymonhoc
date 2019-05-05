@@ -9,16 +9,17 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.dangkymonhoc.R;
+import com.example.model.BienLai;
 import com.example.model.MonHoc;
 
 import java.util.List;
 
-public class HocPhiAdapter extends ArrayAdapter<MonHoc> {
+public class HoaDonAdapter extends ArrayAdapter<BienLai> {
     Activity context=null;
-    List<MonHoc> objects;
+    List<BienLai> objects;
     int resource;
 
-    public HocPhiAdapter(Context context, int resource, List<MonHoc> objects) {
+    public HoaDonAdapter(Context context, int resource, List<BienLai> objects) {
         super(context, resource, objects);
         this.resource=resource;
         this.objects=objects;
@@ -32,8 +33,8 @@ public class HocPhiAdapter extends ArrayAdapter<MonHoc> {
         if(convertView==null){
             convertView=layoutInflater.inflate(this.resource,null);
             viewHolder=new ViewHolder();
-            viewHolder.txtTenMH=convertView.findViewById(R.id.txtTenMonHoc);
-            viewHolder.txtSoTC=convertView.findViewById(R.id.txtSoTC);
+            viewHolder.txtSoBienLai=convertView.findViewById(R.id.txtSoBienLai);
+            viewHolder.txtNgayDong=convertView.findViewById(R.id.txtNgayDong);
             viewHolder.txtSoTien=convertView.findViewById(R.id.txtSoTien);
             viewHolder.position=position;
 
@@ -43,17 +44,16 @@ public class HocPhiAdapter extends ArrayAdapter<MonHoc> {
         {
             viewHolder= (ViewHolder) convertView.getTag();
         }
-        MonHoc monHoc=objects.get(position);
-        viewHolder.txtTenMH.setText(monHoc.getTenMH());
-        viewHolder.txtSoTC.setText(monHoc.getSoTC()+" TC");
-        viewHolder.txtSoTien.setText(monHoc.getSoTC()*400000+" đồng");
-
+        BienLai bienLai= objects.get(position);
+        viewHolder.txtSoBienLai.setText(bienLai.getSoBL()+"");
+        viewHolder.txtNgayDong.setText(bienLai.getNgayHP());
+        viewHolder.txtSoTien.setText(bienLai.getSoTien()+"");
         return convertView;
     }
 
     public static class ViewHolder{
-        TextView txtTenMH;
-        TextView txtSoTC;
+        TextView txtSoBienLai;
+        TextView txtNgayDong;
         TextView txtSoTien;
         int position;
     }

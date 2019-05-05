@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "591498136370",
+    "firebase_url": "https://dangkymonhoc-1b60a.firebaseio.com",
+    "project_id": "dangkymonhoc-1b60a",
+    "storage_bucket": "dangkymonhoc-1b60a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591498136370:android:fec6ce316fd5c2e4",
+        "android_client_info": {
+          "package_name": "com.example.dangkymonhoc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "591498136370-qm8mumkfllpsr3v7ae4o38f0lrensc0b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dangkymonhoc",
+            "certificate_hash": "358e528a40bb7a4b0bcfcbd7f81d60ab1c1526c6"
+          }
+        },
+        {
+          "client_id": "591498136370-fujg6fnju07n05ov1j7fkemlfl3gbub8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcukiT8WvaXUYeLsq5_H80tpO2kr_8MqU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "591498136370-fujg6fnju07n05ov1j7fkemlfl3gbub8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

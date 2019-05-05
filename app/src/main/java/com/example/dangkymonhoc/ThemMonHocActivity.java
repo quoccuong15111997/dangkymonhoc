@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.adapter.MonHocRecycleAdapter;
 import com.example.impl.CheckBoxIsCheck;
+import com.example.model.BienLai;
 import com.example.model.MonHoc;
 import com.example.model.ThongTinHocPhi;
 
@@ -35,10 +36,12 @@ public class ThemMonHocActivity extends AppCompatActivity implements CheckBoxIsC
     ArrayList<MonHoc> dsMonHoc;
     SQLiteDatabase database = null;
     ArrayList<MonHoc> dsMonHocChon;
+    ArrayList<MonHoc> dsMonHocDaDangKy;
     EditText edtSeach;
     ImageView imgSeach;
     TextView txtSoTinChi;
     int tongSoTinChi=0;
+    public static String DATABASE_NAME="DHMH.db";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,48 +81,48 @@ public class ThemMonHocActivity extends AppCompatActivity implements CheckBoxIsC
             task.execute(edtSeach.getText().toString());
         } else {
             dsMonHoc.clear();
-            layDanhSachMonHoc();
+            layDanhSachMonHoc(dsMonHocDaDangKy);
         }
     }
 
     private void xuLyLuu() {
-        for (MonHoc monHoc : dsMonHocChon) {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put("SOBL", MonHocFragment.bienLaiHocPhi.getSoBL());
-            contentValues.put("MAMH", monHoc.getMaMH());
-            contentValues.put("SOTIEN", monHoc.getSoTC() * 400000);
-            database.insert("THONGTINHOCPHI", null, contentValues);
-            AlertDialog.Builder builder = new AlertDialog.Builder(ThemMonHocActivity.this);
-            builder.setTitle("Lưu thành công").setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+        LuuMonHocTask task= new LuuMonHocTask();
+        task.execute(dsMonHocChon);
 
-                }
-            }).setIcon(R.drawable.ic_ok).show();
-        }
-        dsMonHoc.clear();
-        layDanhSachMonHoc();
-        recycleAdapter.notifyDataSetChanged();
     }
 
     private void addControls() {
+
+        openDatabase();
+
+        dsMonHocDaDangKy= new ArrayList<>();
         dsMonHocChon = new ArrayList<>();
         dsMonHoc = new ArrayList<>();
         rcyMonHoc = findViewById(R.id.rcy_MonHoc);
         recycleAdapter = new MonHocRecycleAdapter(ThemMonHocActivity.this, dsMonHoc);
         recycleAdapter.isChecked(this);
         rcyMonHoc.setLayoutManager(new LinearLayoutManager(ThemMonHocActivity.this));
-        layDanhSachMonHoc();
+        layDanhSachMonHocDaDangKy();
+        layDanhSachMonHoc(dsMonHocDaDangKy);
         rcyMonHoc.setAdapter(recycleAdapter);
         imgBack = findViewById(R.id.iv_back);
         imgSave = findViewById(R.id.iv_Save);
         edtSeach = findViewById(R.id.edtSeach);
         imgSeach = findViewById(R.id.imgSeach);
         txtSoTinChi=findViewById(R.id.txtSoTinChi);
-        for(MonHoc mh : MonHocFragment.dsMonHoc){
+        for(MonHoc mh : MonHocFragments.dsMonHoc){
             tongSoTinChi+=mh.getSoTC();
         }
         txtSoTinChi.setText(tongSoTinChi+" Tín chỉ");
+    }
+    private void openDatabase() {
+
+        database=openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+    }
+
+    private void layDanhSachMonHocDaDangKy() {
+        LayDanhSachMonHocTheoMaSinhVienTask task= new LayDanhSachMonHocTheoMaSinhVienTask();
+        task.execute(HomeActivity.sinhVienLogin.getMaSinhVien());
     }
 
     @Override
@@ -153,8 +156,8 @@ public class ThemMonHocActivity extends AppCompatActivity implements CheckBoxIsC
         return true;
     }
 
-    public void layDanhSachMonHoc() {
-        database = openOrCreateDatabase("DHMH.db", MODE_PRIVATE, null);
+    public void layDanhSachMonHoc(ArrayList<MonHoc> ds) {
+        dsMonHoc.clear();
         Cursor cursor = database.rawQuery("select * from MONHOC ", null);
         while (cursor.moveToNext()) {
             String maMh = cursor.getString(0);
@@ -166,7 +169,7 @@ public class ThemMonHocActivity extends AppCompatActivity implements CheckBoxIsC
             monHoc.setTenMH(tenMH);
             dsMonHoc.add(monHoc);
         }
-        for (MonHoc monHocDaChon : MonHocFragment.dsMonHoc) {
+        for (MonHoc monHocDaChon : ds) {
             for (MonHoc monHocMoi : dsMonHoc) {
                 if (monHocDaChon.getMaMH().equals(monHocMoi.getMaMH())) {
                     monHocMoi.setChon(true);
@@ -204,17 +207,16 @@ public class ThemMonHocActivity extends AppCompatActivity implements CheckBoxIsC
         @Override
         protected ArrayList<MonHoc> doInBackground(String... strings) {
             ArrayList<MonHoc> monHocs = new ArrayList<>();
-            database = ThemMonHocActivity.this.openOrCreateDatabase("DHMH.db", MODE_PRIVATE, null);
             Cursor cursor = database.rawQuery("select * from MONHOC where TENMH like '%" + strings[0] + "%'", null);
             while (cursor.moveToNext()) {
                 String ma = cursor.getString(0);
                 String ten = cursor.getString(1);
                 int soTC = cursor.getInt(2);
-                MonHoc monHoc = new MonHoc(ma, ten, soTC, true);
+                MonHoc monHoc = new MonHoc(ma, ten, soTC, false,false);
                 monHocs.add(monHoc);
             }
             cursor.close();
-            for (MonHoc monHocDaChon : MonHocFragment.dsMonHoc) {
+            for (MonHoc monHocDaChon : dsMonHocDaDangKy) {
                 for (MonHoc monHocMoi : monHocs) {
                     if (monHocDaChon.getMaMH().equals(monHocMoi.getMaMH())) {
                         monHocMoi.setChon(true);
@@ -263,17 +265,16 @@ public class ThemMonHocActivity extends AppCompatActivity implements CheckBoxIsC
         @Override
         protected ArrayList<MonHoc> doInBackground(String... strings) {
             ArrayList<MonHoc> monHocs = new ArrayList<>();
-            database = ThemMonHocActivity.this.openOrCreateDatabase("DHMH.db", MODE_PRIVATE, null);
             Cursor cursor = database.rawQuery("select * from MONHOC where MAMH like '%" + strings[0] + "%'", null);
             while (cursor.moveToNext()) {
                 String ma = cursor.getString(0);
                 String ten = cursor.getString(1);
                 int soTC = cursor.getInt(2);
-                MonHoc monHoc = new MonHoc(ma, ten, soTC, true);
+                MonHoc monHoc = new MonHoc(ma, ten, soTC, true,false);
                 monHocs.add(monHoc);
             }
             cursor.close();
-            for (MonHoc monHocDaChon : MonHocFragment.dsMonHoc) {
+            for (MonHoc monHocDaChon : dsMonHocDaDangKy) {
                 for (MonHoc monHocMoi : monHocs) {
                     if (monHocDaChon.getMaMH().equals(monHocMoi.getMaMH())) {
                         monHocMoi.setChon(true);
@@ -282,6 +283,106 @@ public class ThemMonHocActivity extends AppCompatActivity implements CheckBoxIsC
                 }
             }
             return monHocs;
+        }
+    }
+    class LuuMonHocTask extends AsyncTask<ArrayList<MonHoc>,Void,Boolean>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            AlertDialog.Builder builder = new AlertDialog.Builder(ThemMonHocActivity.this);
+            builder.setTitle("Lưu thành công").setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            }).setIcon(R.drawable.ic_ok).show();
+            dsMonHoc.clear();
+            layDanhSachMonHocDaDangKy();
+            layDanhSachMonHoc(dsMonHocDaDangKy);
+            recycleAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected Boolean doInBackground(ArrayList<MonHoc>... arrayLists) {
+            for (MonHoc monHoc : arrayLists[0]) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("SOBL", MonHocFragments.bienLaiHocPhi.getSoBL());
+                contentValues.put("MAMH", monHoc.getMaMH());
+                contentValues.put("SOTIEN", monHoc.getSoTC() * 400000);
+                database.insert("THONGTINHOCPHI", null, contentValues);
+            }
+            return true;
+        }
+    }
+    class LayDanhSachMonHocTheoMaSinhVienTask extends AsyncTask<String,Void,ArrayList<MonHoc>>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<MonHoc> monHocs) {
+            super.onPostExecute(monHocs);
+            dsMonHocDaDangKy.clear();;
+            dsMonHocDaDangKy.addAll(monHocs);
+            layDanhSachMonHoc(monHocs);
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected ArrayList<MonHoc> doInBackground(String... strings) {
+            ArrayList<MonHoc> danhSachMonHoc=new ArrayList<>();
+            String maSinhVien=strings[0];
+            BienLai bienLai= new BienLai();
+            ArrayList<ThongTinHocPhi> dsThongTinHP = new ArrayList<>();
+            Cursor cursorBienLai = database.rawQuery("select * from BIENLAIHOCPHI where MASV like '" + maSinhVien + "'", null);
+            bienLai= new BienLai();
+            while (cursorBienLai.moveToNext()) {
+                int soBL = cursorBienLai.getInt(0);
+                String ngayHp = cursorBienLai.getString(1);
+                String mSv = cursorBienLai.getString(2);
+                bienLai.setMaSV(mSv);
+                bienLai.setNgayHP(ngayHp);
+                bienLai.setSoBL(soBL);
+            }
+            cursorBienLai.close();
+
+            Cursor cursorThongTin = database.rawQuery("select * from THONGTINHOCPHI where SOBL like '" + bienLai.getSoBL() + "'", null);
+            while (cursorThongTin.moveToNext()) {
+                int soBl = cursorThongTin.getInt(0);
+                String maMH = cursorThongTin.getString(1);
+                int soTien = cursorThongTin.getInt(2);
+                ThongTinHocPhi thongTinHocPhi = new ThongTinHocPhi(soBl, maMH, soTien);
+                dsThongTinHP.add(thongTinHocPhi);
+            }
+            cursorThongTin.close();
+
+            for (ThongTinHocPhi thongTinHocPhi : dsThongTinHP){
+                Cursor cursor = database.rawQuery("select * from MONHOC where MAMH like '" + thongTinHocPhi.getMaMH() + "'", null);
+                while (cursor.moveToNext()) {
+                    String maMh = cursor.getString(0);
+                    String tenMH = cursor.getString(1);
+                    int soTC = cursor.getInt(2);
+                    MonHoc monHoc = new MonHoc(maMh, tenMH, soTC,true,false);
+                    danhSachMonHoc.add(monHoc);
+                }
+                cursor.close();
+            }
+            return danhSachMonHoc;
         }
     }
 }

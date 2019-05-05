@@ -123,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this,"Sai Mã sinh viên hoặc mật khẩu",Toast.LENGTH_LONG).show();
         }
         cursor.close();
-
+        database.close();
     }
 
     public void CopyDataBaseFromAsset() {

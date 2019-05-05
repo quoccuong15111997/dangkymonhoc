@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:padding="10dp"
+    android:background="@drawable/border_edittext"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Số biên lai"
+            android:layout_weight="1"
+            android:textColor="@color/colorRed"
+            android:textSize="20dp" />
+        <TextView
+            android:id="@+id/txtSoBienLai"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Số biên lai"
+            android:layout_weight="1"
+            android:textColor="@color/colorRed"
+            android:textSize="20dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ngày đóng"
+            android:layout_weight="1"
+            android:textColor="@color/colorBlack"
+            android:textSize="18dp" />
+        <TextView
+            android:id="@+id/txtNgayDong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Số biên lai"
+            android:layout_weight="1"
+            android:textColor="@color/colorBlack"
+            android:textSize="18dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Số Tiền"
+            android:layout_weight="1"
+            android:textColor="@color/colorBlack"
+            android:textSize="18dp" />
+        <TextView
+            android:id="@+id/txtSoTien"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Số biên lai"
+            android:layout_weight="1"
+            android:textColor="@color/colorMBlue"
+            android:textSize="18dp" />
+    </LinearLayout>
+</LinearLayout>
