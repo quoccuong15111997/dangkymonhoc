@@ -10,6 +10,7 @@ import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -17,6 +18,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.model.SinhVien;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -40,11 +45,14 @@ public class LoginActivity extends AppCompatActivity {
     public static final String PASS = "passKey";
     public static final String REMEMBER = "remember";
     public static String KEY_NHAN_VIEN="";
-
+    private static final String TAG = "MainActivity";
+    Bundle savedInstanceState;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        this.savedInstanceState=savedInstanceState;
+        FirebaseApp.initializeApp(this);
         processCopy();
         addControls();
         addEvents();
@@ -71,6 +79,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void addControls() {
+
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "Token: " + token);
+
         sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         btnLogin=findViewById(R.id.btnLogin);
         edtMa=findViewById(R.id.edtUserName);

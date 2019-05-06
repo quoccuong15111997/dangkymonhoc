@@ -1,8 +1,10 @@
 package com.example.dangkymonhoc;
 
 import android.content.DialogInterface;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,18 +13,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.model.ThongBao;
+import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Random;
 
 public class ThemThongBaoActivity extends AppCompatActivity {
     EditText edtTile, edtMessege;
     ImageView imgBack, imgSave;
     DatabaseReference mData;
     SimpleDateFormat simpleDateFormat= new SimpleDateFormat("dd/MM/yyyy");
+    private String SENDER_ID="591498136370";
+    Random random= new Random();
+    private int messageId=random.nextInt();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +39,7 @@ public class ThemThongBaoActivity extends AppCompatActivity {
         addControls();
         initFirebase();
         addEvenst();
+
     }
 
     private void initFirebase() {
