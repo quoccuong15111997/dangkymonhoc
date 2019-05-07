@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,11 +19,16 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.model.Message;
 import com.example.model.SinhVien;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,6 +36,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
 
 public class LoginActivity extends AppCompatActivity {
     String DATABASE_NAME= "DHMH.db";
@@ -82,6 +92,19 @@ public class LoginActivity extends AppCompatActivity {
 
         String token = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "Token: " + token);
+
+        FirebaseMessaging.getInstance().subscribeToTopic("ThongBao")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Đăng ký thành công";
+                        if (!task.isSuccessful()) {
+                            msg = "Đăng ký thất bại";
+                        }
+                        Log.d(TAG, msg);
+                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
         sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         btnLogin=findViewById(R.id.btnLogin);

@@ -1,6 +1,7 @@
 package com.example.dangkymonhoc;
 
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +21,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Random;
@@ -85,6 +90,8 @@ public class ThemThongBaoActivity extends AppCompatActivity {
                             }
                         }
                     });
+            SendMessage sendMessage= new SendMessage();
+            sendMessage.execute();
         }
     }
 
@@ -93,5 +100,42 @@ public class ThemThongBaoActivity extends AppCompatActivity {
       edtTile=findViewById(R.id.edtTitle);
       imgBack=findViewById(R.id.iv_back);
       imgSave=findViewById(R.id.iv_Save);
+    }
+    class SendMessage extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                URL url= new URL("https://fcm.googleapis.com/fcm/send");
+                HttpURLConnection connection= (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type","application/json");
+                connection.setRequestProperty("Authorization","key=AIzaSyBLaZ09LAGUjRScDuwed6nYPYFO1tX0UyU");
+
+                String input="{ \"to\":\"/topics/ThongBao\",\"notification\" : { \"body\" : \"New announcement assigned\" }}";
+
+                OutputStream os=connection.getOutputStream();
+                os.write(input.getBytes());
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
+            return null;
+
+        }
     }
 }
