@@ -39,5 +39,6 @@ dependencies {
     implementation 'agency.tango.android:avatar-view-glide:0.0.2'
     implementation 'agency.tango.android:avatar-view:0.0.2'
     implementation 'agency.tango.android:avatar-view-picasso:0.0.2'
+    implementation 'com.loopj.android:android-async-http:1.4.9'
 }
 apply plugin: 'com.google.gms.google-services'

@@ -1,5 +1,6 @@
 package com.example.dangkymonhoc;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Message;
@@ -8,26 +9,34 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Xml;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.model.ThongBao;
-import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Random;
+
+import cz.msebera.android.httpclient.HttpHeaders;
+import cz.msebera.android.httpclient.entity.StringEntity;
 
 public class ThemThongBaoActivity extends AppCompatActivity {
     EditText edtTile, edtMessege;
@@ -37,6 +46,8 @@ public class ThemThongBaoActivity extends AppCompatActivity {
     private String SENDER_ID="591498136370";
     Random random= new Random();
     private int messageId=random.nextInt();
+
+    private static final String TAG = "ThemThongBaoActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,8 +101,43 @@ public class ThemThongBaoActivity extends AppCompatActivity {
                             }
                         }
                     });
-            SendMessage sendMessage= new SendMessage();
-            sendMessage.execute();
+            sendNotification();
+        }
+    }
+
+    private void sendNotification() {
+        try {
+            String url = "https://fcm.googleapis.com/fcm/send";
+            AsyncHttpClient client = new AsyncHttpClient();
+
+            client.addHeader(HttpHeaders.AUTHORIZATION, "key=AIzaSyBLaZ09LAGUjRScDuwed6nYPYFO1tX0UyU");
+            client.addHeader(HttpHeaders.CONTENT_TYPE, RequestParams.APPLICATION_JSON);
+            JSONObject params = new JSONObject();
+
+            params.put("to","/topics/ThongBao");
+
+            JSONObject notificationObject = new JSONObject();
+            notificationObject.put("body", "New Notification");
+            notificationObject.put("title", "PTIT HCM");
+
+            params.put("notification", notificationObject);
+
+            StringEntity entity = new StringEntity(params.toString());
+
+            client.post(getApplicationContext(), url, entity, RequestParams.APPLICATION_JSON, new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
+                    Log.i(TAG, responseString);
+                }
+
+                @Override
+                public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString) {
+                    Log.i(TAG, responseString);
+                }
+            });
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
         }
     }
 
@@ -101,41 +147,5 @@ public class ThemThongBaoActivity extends AppCompatActivity {
       imgBack=findViewById(R.id.iv_back);
       imgSave=findViewById(R.id.iv_Save);
     }
-    class SendMessage extends AsyncTask<Void,Void,Void> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                URL url= new URL("https://fcm.googleapis.com/fcm/send");
-                HttpURLConnection connection= (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("POST");
-                connection.setRequestProperty("Content-Type","application/json");
-                connection.setRequestProperty("Authorization","key=AIzaSyBLaZ09LAGUjRScDuwed6nYPYFO1tX0UyU");
-
-                String input="{ \"to\":\"/topics/ThongBao\",\"notification\" : { \"body\" : \"New announcement assigned\" }}";
-
-                OutputStream os=connection.getOutputStream();
-                os.write(input.getBytes());
-            }
-            catch (Exception ex){
-                ex.printStackTrace();
-            }
-            return null;
-
-        }
-    }
 }

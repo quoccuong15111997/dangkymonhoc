@@ -1,13 +1,17 @@
 package com.example.dangkymonhoc;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,6 +35,7 @@ public class ThongBaoFragment extends Fragment {
     ArrayList<ThongBao> dsThongBao;
     DatabaseReference mData;
     ImageView imgAdd;
+    ArrayList<String> dsKEY;
 
     @Nullable
     @Override
@@ -42,12 +47,20 @@ public class ThongBaoFragment extends Fragment {
         return view;
     }
 
+    private void autoUpdate() {
+        dsKEY.clear();
+        dsThongBao.clear();
+        initFirebase();
+        thongBaoAdapter.notifyDataSetChanged();
+    }
+
     private void initFirebase() {
         mData= FirebaseDatabase.getInstance().getReference();
         mData.child("ThongBao").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 ThongBao thongBao=dataSnapshot.getValue(ThongBao.class);
+                dsKEY.add(dataSnapshot.getKey());
                 dsThongBao.add(thongBao);
                 thongBaoAdapter.notifyDataSetChanged();
             }
@@ -82,9 +95,62 @@ public class ThongBaoFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        lvThongBao.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+            }
+        });
+        lvThongBao.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                if(HomeActivity.sinhVienLogin.getMaSinhVien().equals("admin")){
+                    AlertDialog.Builder builder= new AlertDialog.Builder(view.getContext());
+                    builder.setTitle("Bạn muốn").setNegativeButton("Xóa", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            xuLyXoaMessage(position);
+                        }
+                    }).setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    }).show();
+                }
+                return false;
+            }
+        });
+    }
+
+    private void xuLyXoaMessage(int position) {
+        mData.child("ThongBao").child(dsKEY.get(position)).removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if(databaseError==null){
+                    AlertDialog.Builder builder= new AlertDialog.Builder(view.getContext());
+                    builder.setTitle("Xóa thành công").setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    }).setIcon(R.drawable.ic_ok).show();
+
+                    autoUpdate();
+                }
+                else {
+                    AlertDialog.Builder builder= new AlertDialog.Builder(view.getContext());
+                    builder.setTitle("Xóa thất bại").setNegativeButton("Thử lại", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    }).setIcon(R.drawable.ic_error).show();
+                }
+            }
+        });
     }
 
     private void addControls() {
+        dsKEY= new ArrayList<>();
         dsThongBao= new ArrayList<>();
         lvThongBao=view.findViewById(R.id.lvThongBao);
         thongBaoAdapter= new ThongBaoAdapter(view.getContext(),R.layout.item_thong_bao,dsThongBao);
