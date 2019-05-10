@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/border_edittext"
+    android:layout_marginTop="3dp"
     android:orientation="horizontal">
     <TextView
         android:id="@+id/txtTen"
@@ -23,15 +24,6 @@
         android:textColor="#000000"
         android:textAlignment="center"
         android:text="Mã sinh viên"/>
-    <TextView
-        android:id="@+id/txtSoMon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textSize="18dp"
-        android:textColor="#000000"
-        android:textAlignment="center"
-        android:text="Số môn"/>
 
 
 </LinearLayout>

@@ -21,12 +21,10 @@ import java.util.ArrayList;
 public class SinhVienRecycleAdapter extends RecyclerView.Adapter<SinhVienRecycleAdapter.ViewHolder>{
     private Context context;
     private ArrayList<SinhVien> data;
-    private int SoMon;
 
-    public SinhVienRecycleAdapter(Context context, ArrayList<SinhVien> data,int soMon){
+    public SinhVienRecycleAdapter(Context context, ArrayList<SinhVien> data){
         this.context=context;
         this.data=data;
-        this.SoMon=soMon;
     }
 
     @NonNull
@@ -43,7 +41,6 @@ public class SinhVienRecycleAdapter extends RecyclerView.Adapter<SinhVienRecycle
         final SinhVien sinhVien=data.get(i);
         viewHolder.txtTen.setText(sinhVien.getTenSinhVien());
         viewHolder.txtMaSv.setText(sinhVien.getMaSinhVien());
-        viewHolder.txtSoMon.setText(this.SoMon);
     }
 
     @Override
@@ -55,13 +52,11 @@ public class SinhVienRecycleAdapter extends RecyclerView.Adapter<SinhVienRecycle
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView txtTen;
         TextView txtMaSv;
-        TextView txtSoMon;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
            txtTen=itemView.findViewById(R.id.txtTen);
-           txtSoMon=itemView.findViewById(R.id.txtSoMon);
-           txtMaSv=(TextView) itemView.findViewById(R.id.txtMaSV);
+           txtMaSv= itemView.findViewById(R.id.txtMaSV);
         }
     }
 }

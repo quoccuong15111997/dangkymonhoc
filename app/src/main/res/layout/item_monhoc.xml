@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:background="@drawable/border_edittext"
+    android:layout_marginTop="5dp"
     android:padding="10dp"
     android:layout_height="wrap_content">
 <TextView
