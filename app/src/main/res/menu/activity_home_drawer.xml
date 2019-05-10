@@ -24,10 +24,9 @@
             android:id="@+id/nav_TaiKhoan"
             android:icon="@drawable/ic_account"
             android:title="Tài khoản" />
-        <item
-            android:id="@+id/nav_DangXuat"
-            android:icon="@drawable/ic_logout"
-            android:title="Đăng xuất" />
     </group>
-
+    <item
+        android:id="@+id/nav_DangXuat"
+        android:icon="@drawable/ic_logout"
+        android:title="Đăng xuất" />
 </menu>

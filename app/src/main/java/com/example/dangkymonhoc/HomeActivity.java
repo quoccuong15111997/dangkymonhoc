@@ -37,8 +37,14 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MonHocFragments()).commit();
-        toolbar.setTitle("Quản lý môn học");
+        if (sinhVienLogin.getMaSinhVien().equals("admin")){
+            Intent intent= new Intent(HomeActivity.this,QuanLyActivity.class);
+            startActivity(intent);
+        }
+        else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MonHocFragments()).commit();
+            toolbar.setTitle("Quản lý môn học");
+        }
     }
 
     private void addControls() {
