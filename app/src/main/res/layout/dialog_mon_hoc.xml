@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bober_dialog"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="match_parent"
+        android:text="Thêm môn học"
+        android:layout_margin="10dp"
+        android:textSize="20dp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/edtTenMonHoc"
+        android:layout_margin="10dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:hint="Tên môn học"
+        android:layout_gravity="center"
+        android:textColor="#000000"
+        android:background="@drawable/border_edittext_c"/>
+    <EditText
+        android:id="@+id/edtMaMonHoc"
+        android:layout_margin="10dp"
+        android:layout_width="300dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:hint="Mã môn học"
+        android:textColor="#000000"
+        android:background="@drawable/border_edittext_c"/>
+    <EditText
+        android:id="@+id/edtSoTinChi"
+        android:layout_margin="10dp"
+        android:layout_width="300dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:hint="Số tín chỉ"
+        android:textColor="#000000"
+        android:background="@drawable/border_edittext_c"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lưu"
+            android:textColor="#FFFF"
+            android:layout_margin="5dp"
+            android:background="@drawable/bober_button_luu"
+            android:id="@+id/btnLuuMonHoc"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#FFFF"
+            android:id="@+id/btnHuyMonHoc"
+            android:layout_margin="5dp"
+            android:background="@drawable/bober_button_huy"
+            android:text="Hủy"/>
+    </LinearLayout>
+</LinearLayout>

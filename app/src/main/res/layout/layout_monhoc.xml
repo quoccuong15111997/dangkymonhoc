@@ -19,9 +19,9 @@
         android:clickable="true"
         android:layout_alignParentBottom="true"
         android:src="@android:drawable/ic_input_add"
-        android:id="@+id/fabAdd"
+        android:id="@+id/fabAddMonHoc"
         android:tint="@android:color/white"
-        android:layout_toLeftOf="@id/fabDelete"
+        android:layout_toLeftOf="@id/fabDeleteMonHoc"
         android:visibility="gone"
         app:fabSize="auto" />
     <android.support.design.widget.FloatingActionButton
@@ -31,7 +31,7 @@
         android:clickable="true"
         android:visibility="gone"
         android:src="@android:drawable/ic_delete"
-        android:id="@+id/fabDelete"
+        android:id="@+id/fabDeleteMonHoc"
         android:tint="@android:color/white"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@id/fabMenu"

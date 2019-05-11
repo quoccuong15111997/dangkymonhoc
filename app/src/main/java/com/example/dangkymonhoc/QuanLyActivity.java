@@ -1,10 +1,13 @@
 package com.example.dangkymonhoc;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteTransactionListener;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,6 +33,9 @@ import com.example.adapter.MonHocRecycleAdapter;
 import com.example.adapter.SinhVienRecycleAdapter;
 import com.example.adapter.ThongBaoAdapter;
 import com.example.impl.CheckBoxIsCheck;
+import com.example.impl.ItemLongClick;
+import com.example.impl.MonHocOnClickListener;
+import com.example.impl.myOnClickListener;
 import com.example.model.MonHoc;
 import com.example.model.SinhVien;
 import com.example.model.ThongBao;
@@ -54,9 +60,12 @@ public class QuanLyActivity extends AppCompatActivity implements CheckBoxIsCheck
     ArrayList<SinhVien> dsSinhVien;
     ArrayList<MonHoc> dsMonHoc;
     ArrayList<ThongBao> dsThongBao;
-    FloatingActionButton fabMenu, fabDelete, fabAdd, fabAddThongBao;
+    FloatingActionButton fabMenu, fabDeleteMonHoc, fabAddMonHoc, fabAddThongBao, fabAddSinhVien;
     Boolean trangThaiFab=false;
     Animation animation_in, animation_out;
+
+    DialogSinhVien dialogSinhVien;
+    DialogMonHoc dialogMonHoc;
 
     DatabaseReference mData;
     ArrayList<String> dsKEY;
@@ -64,6 +73,9 @@ public class QuanLyActivity extends AppCompatActivity implements CheckBoxIsCheck
     TextView txtTen, txtMa;
     EditText edtInput;
     ImageView imgSeach;
+    public myOnClickListener myListener;
+    SinhVien sinhVienThem;
+    MonHoc monHocThem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,17 +133,17 @@ public class QuanLyActivity extends AppCompatActivity implements CheckBoxIsCheck
             @Override
             public void onClick(View v) {
                 if (trangThaiFab == false) {
-                    fabAdd.startAnimation(animation_in);
-                    fabAdd.setVisibility(View.VISIBLE);
-                    fabDelete.startAnimation(animation_in);
-                    fabDelete.setVisibility(View.VISIBLE);
+                    fabAddMonHoc.startAnimation(animation_in);
+                    fabAddMonHoc.setVisibility(View.VISIBLE);
+                    fabDeleteMonHoc.startAnimation(animation_in);
+                    fabDeleteMonHoc.setVisibility(View.VISIBLE);
                     trangThaiFab=true;
                 }
                 else if(trangThaiFab==true){
-                    fabAdd.startAnimation(animation_out);
-                    fabAdd.setVisibility(View.INVISIBLE);
-                    fabDelete.startAnimation(animation_out);
-                    fabDelete.setVisibility(View.INVISIBLE);
+                    fabAddMonHoc.startAnimation(animation_out);
+                    fabAddMonHoc.setVisibility(View.GONE);
+                    fabDeleteMonHoc.startAnimation(animation_out);
+                    fabDeleteMonHoc.setVisibility(View.GONE);
                     trangThaiFab=false;
                 }
             }
@@ -169,7 +181,6 @@ public class QuanLyActivity extends AppCompatActivity implements CheckBoxIsCheck
             public void onClick(View v) {
                 if(edtInput.getText().equals("")==false){
                     xuLyTimSinhVien();
-                    edtInput.setText("");
                 }
                 else
                 {
@@ -177,6 +188,25 @@ public class QuanLyActivity extends AppCompatActivity implements CheckBoxIsCheck
                     layDanhSachSinhVien();
                     edtInput.setText("");
                 }
+
+            }
+        });
+        fabAddSinhVien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fabAddSinhVien.startAnimation(animation_in);
+                dialogSinhVien.show();
+            }
+        });
+        fabAddMonHoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogMonHoc.show();
+            }
+        });
+        fabDeleteMonHoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
             }
         });
@@ -229,9 +259,23 @@ public class QuanLyActivity extends AppCompatActivity implements CheckBoxIsCheck
         dsSinhVien= new ArrayList<>();
         dsThongBao= new ArrayList<>();
 
+        ItemLongClick itemLongClick= new ItemLongClick() {
+            @Override
+            public void isClicedItem(int position) {
+                xuLyLogClickSinhVien(position);
+            }
+        };
+
+        MonHocOnClickListener monHocOnClickListener= new MonHocOnClickListener() {
+            @Override
+            public void onButtonClick(String ten, String ma, int SoTC) {
+                xuLuLuuMonHoc(ten,ma,SoTC);
+            }
+        };
+
         recy_SinhVien=findViewById(R.id.recy_sinhvien);
         recy_SinhVien.setLayoutManager(new LinearLayoutManager(QuanLyActivity.this));
-        sinhVienAdapter= new SinhVienRecycleAdapter(QuanLyActivity.this,dsSinhVien);
+        sinhVienAdapter= new SinhVienRecycleAdapter(QuanLyActivity.this,dsSinhVien,itemLongClick);
         recy_SinhVien.setAdapter(sinhVienAdapter);
 
         recy_MonHoc=findViewById(R.id.recy_monhoc);
@@ -245,8 +289,8 @@ public class QuanLyActivity extends AppCompatActivity implements CheckBoxIsCheck
         lvThongBao.setAdapter(thongBaoAdapter);
 
         fabMenu=findViewById(R.id.fabMenu);
-        fabAdd=findViewById(R.id.fabAdd);
-        fabDelete=findViewById(R.id.fabDelete);
+        fabAddMonHoc=findViewById(R.id.fabAddMonHoc);
+        fabDeleteMonHoc=findViewById(R.id.fabDeleteMonHoc);
 
         animation_out= AnimationUtils.loadAnimation(QuanLyActivity.this,R.anim.fab_amin);
         animation_in=AnimationUtils.loadAnimation(QuanLyActivity.this,R.anim.fab_in);
@@ -259,6 +303,48 @@ public class QuanLyActivity extends AppCompatActivity implements CheckBoxIsCheck
 
         edtInput=findViewById(R.id.edtInput);
         imgSeach=findViewById(R.id.imgSeach);
+
+        myListener= new myOnClickListener() {
+            @Override
+            public void onButtonClick(String ten, String ma, String phone, String pass) {
+                if(!ten.equals("") && !ma.equals("") && !phone.equals("") && !pass.equals("")){
+                    sinhVienThem= new SinhVien();
+                    sinhVienThem.setMaSinhVien(ma);
+                    sinhVienThem.setTenSinhVien(ten);
+                    sinhVienThem.setPhone(phone);
+                    sinhVienThem.setPassword(pass);
+                    KiemTraMasinhVienTask task= new KiemTraMasinhVienTask();
+                    task.execute(ma);
+                }
+            }
+        };
+        dialogSinhVien= new DialogSinhVien(QuanLyActivity.this,myListener);
+
+        fabAddSinhVien=findViewById(R.id.fabAddSinhVien);
+
+        dialogMonHoc= new DialogMonHoc(QuanLyActivity.this,monHocOnClickListener);
+    }
+
+    private void xuLuLuuMonHoc(String ten, String ma, int soTC) {
+        monHocThem= new MonHoc(ma,ten,soTC,false,false);
+        KiemTraMaMonHocTask task= new KiemTraMaMonHocTask();
+        task.execute(ma);
+    }
+
+    private void xuLyLogClickSinhVien(final int position) {
+        AlertDialog.Builder builder= new AlertDialog.Builder(QuanLyActivity.this);
+        builder.setTitle("Bạn muốn").setNegativeButton("Xóa", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                xuLyXoaSinhVien(position);
+            }
+        }).show();
+    }
+
+    private void xuLyXoaSinhVien(int position) {
+        SinhVien sinhVienXoa=dsSinhVien.get(position);
+        XoaNhanVienTask task= new XoaNhanVienTask();
+        task.execute(sinhVienXoa.getMaSinhVien());
     }
 
     private void setupTasbHost() {
@@ -423,7 +509,10 @@ public class QuanLyActivity extends AppCompatActivity implements CheckBoxIsCheck
                 sinhVienAdapter.notifyDataSetChanged();
             }
             else
+            {
                 Toast.makeText(QuanLyActivity.this,"Không tìm thấy sinh viên",Toast.LENGTH_LONG).show();
+                edtInput.setText("");
+            }
         }
 
         @Override
@@ -450,5 +539,129 @@ public class QuanLyActivity extends AppCompatActivity implements CheckBoxIsCheck
     private void timNhanvienTheoMa(String ma){
         TimNhanVienTheoMaTask task= new TimNhanVienTheoMaTask();
         task.execute(ma);
+    }
+    private void luuMoiSinhVien(){
+        LuuSinhVienMoiTask task= new LuuSinhVienMoiTask();
+        task.execute(sinhVienThem);
+    }
+    class LuuSinhVienMoiTask extends AsyncTask<SinhVien,Void,Void>{
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            AlertDialog.Builder builder= new AlertDialog.Builder(QuanLyActivity.this);
+            builder.setTitle("Lưu thành công").setIcon(R.drawable.ic_ok).setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            }).show();
+            dialogSinhVien.dismiss();
+            dsSinhVien.clear();
+            layDanhSachSinhVien();
+        }
+
+        @Override
+        protected Void doInBackground(SinhVien... sinhViens) {
+            final ContentValues contentValues= new ContentValues();
+            contentValues.put("MASV",sinhViens[0].getMaSinhVien());
+            contentValues.put("SODT",sinhViens[0].getPhone());
+            contentValues.put("PASSWORD",sinhViens[0].getPassword());
+            contentValues.put("HOTENSV",sinhViens[0].getTenSinhVien());
+            database.insert("SINHVIEN", null, contentValues);
+            return null;
+        }
+    }
+    class KiemTraMasinhVienTask extends AsyncTask<String,Void,Boolean>{
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (aBoolean==true){
+                luuMoiSinhVien();
+            }
+            else
+                Toast.makeText(QuanLyActivity.this,"Mã sinh viên đã tồn tại",Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            for(SinhVien sinhVien : dsSinhVien){
+                if(sinhVien.getMaSinhVien().equals(strings[0])){
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+    class XoaNhanVienTask extends AsyncTask<String,Void,Void>{
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            AlertDialog.Builder builder= new AlertDialog.Builder(QuanLyActivity.this);
+            builder.setTitle("Xóa thành công").setIcon(R.drawable.ic_ok).setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            }).show();
+            layDanhSachSinhVien();
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            database.delete("SINHVIEN", "MASV like ?", new String[]{String.valueOf(strings[0])});
+            return null;
+        }
+    }
+    class ThemMonHocMoiTask extends AsyncTask<MonHoc,Void,Void>{
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            AlertDialog.Builder builder= new AlertDialog.Builder(QuanLyActivity.this);
+            builder.setTitle("Lưu thành công").setIcon(R.drawable.ic_ok).setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            }).show();
+            dsMonHoc.clear();
+            layDanhSachMonHoc();
+            dialogMonHoc.dismiss();
+        }
+
+        @Override
+        protected Void doInBackground(MonHoc... monHocs) {
+            final ContentValues contentValues= new ContentValues();
+            contentValues.put("MAMH",monHocs[0].getMaMH());
+            contentValues.put("TENMH",monHocs[0].getTenMH());
+            contentValues.put("SOTC",monHocs[0].getSoTC());
+            database.insert("MONHOC", null, contentValues);
+            return null;
+        }
+    }
+    class KiemTraMaMonHocTask extends AsyncTask<String,Void,Boolean>{
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if(aBoolean==true){
+                LuuMonHoc();
+            }
+            else
+                Toast.makeText(QuanLyActivity.this,"Mã môn học đã tồn tại",Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            for (MonHoc monHoc : dsMonHoc){
+                if(monHoc.getMaMH().equals(strings[0])){
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    private void LuuMonHoc() {
+        ThemMonHocMoiTask task= new ThemMonHocMoiTask();
+        task.execute(monHocThem);
     }
 }

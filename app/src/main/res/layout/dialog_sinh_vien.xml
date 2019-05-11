@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bober_dialog"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="match_parent"
+        android:text="Thêm sinh viên"
+        android:layout_margin="10dp"
+        android:textSize="20dp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/edtTenSinhVien"
+        android:layout_margin="10dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:hint="Tên sinh viên"
+        android:layout_gravity="center"
+        android:textColor="#000000"
+        android:background="@drawable/border_edittext_c"/>
+    <EditText
+        android:id="@+id/edtMaSinhVien"
+        android:layout_margin="10dp"
+        android:layout_width="300dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:hint="Mã sinh viên"
+        android:textColor="#000000"
+        android:background="@drawable/border_edittext_c"/>
+    <EditText
+        android:id="@+id/edtPhone"
+        android:layout_margin="10dp"
+        android:layout_width="300dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:hint="Số điện thoại"
+        android:textColor="#000000"
+        android:background="@drawable/border_edittext_c"/>
+    <EditText
+        android:id="@+id/edtPassword"
+        android:layout_margin="10dp"
+        android:layout_width="300dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:hint="Mật khẩu"
+        android:textColor="#000000"
+        android:background="@drawable/border_edittext_c"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lưu"
+            android:textColor="#FFFF"
+            android:layout_margin="5dp"
+            android:background="@drawable/bober_button_luu"
+            android:id="@+id/btnLuuSinhVien"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#FFFF"
+            android:id="@+id/btnHuySinhVien"
+            android:layout_margin="5dp"
+            android:background="@drawable/bober_button_huy"
+            android:text="Hủy"/>
+    </LinearLayout>
+</LinearLayout>
