@@ -17,9 +17,10 @@
         android:roundIcon="@drawable/ic_app"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".QuanLyActivity"></activity>
+        <activity android:name=".ChiTietSinhVienActivity"></activity>
+        <activity android:name=".QuanLyActivity" />
         <activity android:name=".ThemThongBaoActivity" />
-        <activity android:name="com.example.firebase.PushDataFirebaseActivity" />
+        <activity android:name="com.example.firebase.PushDataFirebaseActivity"></activity>
         <activity android:name=".ThemMonHocActivity" />
         <activity
             android:name=".HomeActivity"

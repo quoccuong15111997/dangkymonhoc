@@ -111,6 +111,7 @@ public class HomeActivity extends AppCompatActivity
             toolbar.setTitle("Thông báo");
         }
         else if (id == R.id.nav_DangXuat) {
+            MonHocFragments.tongSoTinChi=0;
             finish();
         }
 

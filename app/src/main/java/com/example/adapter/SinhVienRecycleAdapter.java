@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.dangkymonhoc.R;
 import com.example.impl.CheckBoxIsCheck;
+import com.example.impl.ItemClick;
 import com.example.impl.ItemLongClick;
 import com.example.model.MonHoc;
 import com.example.model.SinhVien;
@@ -23,11 +24,13 @@ public class SinhVienRecycleAdapter extends RecyclerView.Adapter<SinhVienRecycle
     private Context context;
     private ArrayList<SinhVien> data;
     ItemLongClick itemLongClick;
+    ItemClick itemClick;
 
-    public SinhVienRecycleAdapter(Context context, ArrayList<SinhVien> data, ItemLongClick itemLongClick){
+    public SinhVienRecycleAdapter(Context context, ArrayList<SinhVien> data, ItemLongClick itemLongClick, ItemClick itemClick){
         this.context=context;
         this.data=data;
         this.itemLongClick=itemLongClick;
+        this.itemClick=itemClick;
     }
 
     @NonNull
@@ -65,6 +68,12 @@ public class SinhVienRecycleAdapter extends RecyclerView.Adapter<SinhVienRecycle
                public boolean onLongClick(View v) {
                    itemLongClick.isClicedItem(getAdapterPosition());
                    return false;
+               }
+           });
+           itemView.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   itemClick.isItemClick(getAdapterPosition());
                }
            });
         }

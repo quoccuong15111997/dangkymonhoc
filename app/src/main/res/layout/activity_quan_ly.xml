@@ -22,6 +22,19 @@
             android:textStyle="bold"
             android:visibility="visible"
             android:textSize="18sp"/>
+        <ImageView
+            android:id="@+id/imgBackQuanLy"
+            android:layout_width="@dimen/pd30"
+            android:layout_height="@dimen/pd50"
+            android:src="@mipmap/ic_action_arrow_left"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thoát"
+            android:textSize="@dimen/pd15"
+            android:layout_toRightOf="@id/imgBackQuanLy"
+            android:layout_marginTop="14dp"
+            android:textColor="@color/text_white"/>
     </RelativeLayout>
     <TabHost
         android:id="@+id/tabHost"

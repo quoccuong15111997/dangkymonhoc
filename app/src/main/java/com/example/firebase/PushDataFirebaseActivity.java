@@ -27,7 +27,7 @@ public class PushDataFirebaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_push_data_firebase);
         mData=FirebaseDatabase.getInstance().getReference();
         //pushDataSinhVien();
-        pushDataThongBao();
+        //pushDataThongBao();
     }
 
     private void pushDataThongBao() {
@@ -44,7 +44,7 @@ public class PushDataFirebaseActivity extends AppCompatActivity {
             String soDt = cursor.getString(1);
             String ten = cursor.getString(3);
             String pass=cursor.getString(2);
-            SinhVienFirebase sinhVien= new SinhVienFirebase(maSv,ten,"https://firebasestorage.googleapis.com/v0/b/quanlykho-c05ef.appspot.com/o/119970Chuck%20Taylor%20All%20Star%20Limo%20Leather%20High%20Top?alt=media&token=e94c66dd-ef73-4297-bec4-486cc95059c6");
+            SinhVienFirebase sinhVien= new SinhVienFirebase(maSv,ten,"https://firebasestorage.googleapis.com/v0/b/dangkymonhoc-1b60a.appspot.com/o/ptit.png?alt=media&token=3a15856a-ce02-4350-b471-c6dbca6efcc9");
           FirebaseDatabase.getInstance().getReference().child("SinhVien").push().setValue(sinhVien);
         }
         cursor.close();
