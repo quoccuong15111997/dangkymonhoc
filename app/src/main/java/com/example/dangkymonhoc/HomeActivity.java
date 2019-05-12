@@ -110,6 +110,10 @@ public class HomeActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ThongBaoFragment()).commit();
             toolbar.setTitle("Thông báo");
         }
+        else if (id == R.id.navPhongChat) {
+           Intent intent= new Intent(HomeActivity.this,ChatActivity.class);
+           startActivity(intent);
+        }
         else if (id == R.id.nav_DangXuat) {
             MonHocFragments.tongSoTinChi=0;
             finish();

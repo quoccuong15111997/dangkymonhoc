@@ -291,7 +291,7 @@ public class QuanLyActivity extends AppCompatActivity implements CheckBoxIsCheck
     }
 
     private void xuLyTimSinhVien() {
-        TimNhanVienTheoTenTask task= new TimNhanVienTheoTenTask();
+        TimSinhVienTheoTenTask task= new TimSinhVienTheoTenTask();
         task.execute(edtInput.getText().toString());
     }
 
@@ -412,7 +412,7 @@ public class QuanLyActivity extends AppCompatActivity implements CheckBoxIsCheck
 
     private void xuLyXoaSinhVien(int position) {
         SinhVien sinhVienXoa=dsSinhVien.get(position);
-        XoaNhanVienTask task= new XoaNhanVienTask();
+        XoaSinhVienTask task= new XoaSinhVienTask();
         task.execute(sinhVienXoa.getMaSinhVien());
     }
 
@@ -581,7 +581,7 @@ public class QuanLyActivity extends AppCompatActivity implements CheckBoxIsCheck
             return dsSV;
         }
     }
-    class TimNhanVienTheoTenTask extends AsyncTask<String,Void,ArrayList<SinhVien>>{
+    class TimSinhVienTheoTenTask extends AsyncTask<String,Void,ArrayList<SinhVien>>{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -596,7 +596,7 @@ public class QuanLyActivity extends AppCompatActivity implements CheckBoxIsCheck
                 sinhVienAdapter.notifyDataSetChanged();
             }
             else
-                timNhanvienTheoMa(edtInput.getText().toString());
+                timSinhVienTheoMa(edtInput.getText().toString());
         }
 
         @Override
@@ -620,7 +620,7 @@ public class QuanLyActivity extends AppCompatActivity implements CheckBoxIsCheck
             return dsSv;
         }
     }
-    class TimNhanVienTheoMaTask extends AsyncTask<String,Void,ArrayList<SinhVien>>{
+    class TimSinhVienTheoMaTask extends AsyncTask<String,Void,ArrayList<SinhVien>>{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -662,8 +662,8 @@ public class QuanLyActivity extends AppCompatActivity implements CheckBoxIsCheck
             return dsSv;
         }
     }
-    private void timNhanvienTheoMa(String ma){
-        TimNhanVienTheoMaTask task= new TimNhanVienTheoMaTask();
+    private void timSinhVienTheoMa(String ma){
+        TimSinhVienTheoMaTask task= new TimSinhVienTheoMaTask();
         task.execute(ma);
     }
     private void luuMoiSinhVien(){
@@ -731,7 +731,7 @@ public class QuanLyActivity extends AppCompatActivity implements CheckBoxIsCheck
             return true;
         }
     }
-    class XoaNhanVienTask extends AsyncTask<String,Void,Void>{
+    class XoaSinhVienTask extends AsyncTask<String,Void,Void>{
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);

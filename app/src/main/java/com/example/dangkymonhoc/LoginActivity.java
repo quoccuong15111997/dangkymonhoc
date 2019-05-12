@@ -54,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
     public static final String USERNAME = "userNameKey";
     public static final String PASS = "passKey";
     public static final String REMEMBER = "remember";
-    public static String KEY_NHAN_VIEN="";
     private static final String TAG = "MainActivity";
     Bundle savedInstanceState;
     @Override

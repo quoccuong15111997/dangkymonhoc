@@ -21,6 +21,10 @@
             android:icon="@drawable/ic_noti"
             android:title="Thông báo" />
         <item
+            android:id="@+id/navPhongChat"
+            android:icon="@drawable/chat_24px"
+            android:title="Chat nhóm" />
+        <item
             android:id="@+id/nav_TaiKhoan"
             android:icon="@drawable/ic_account"
             android:title="Tài khoản" />
